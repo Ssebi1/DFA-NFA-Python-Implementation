@@ -21,9 +21,11 @@ def read_data(file):
 
 
 def checkWord(word):
+    global gPath
     state = s
     for c in word:
         state = graph[int(state)][c]
+        gPath.append((state,c))
     if int(state) in fin:
         return True
     return False
@@ -31,9 +33,14 @@ def checkWord(word):
 
 def print_data(file):
     g = open(file,'w')
+    global gPath
     for c in cuv:
+        gPath = []
         if checkWord(c):
-            g.write('DA'+'\n')
+            g.write('DA ')
+            for el in gPath:
+                g.write('(' + str(el[0])+','+str(el[1]) + ')' + ' ')
+            g.write('\n')
         else:
             g.write('NU'+'\n')
     g.close()
