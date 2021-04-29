@@ -48,5 +48,6 @@ def print_data(file):
 
 
 read_data('date.in')
+print(graph)
 print_data('date.out')
 

@@ -34,19 +34,31 @@ def read_data(file):
 
 def checkWord(initialWord,word,state,pos,path):
     global gPath
-    for i in range(len(word)):
-        if word[i] in graph[int(state)].keys():
-            for t in graph[int(state)][word[i]]:
+    i = 0
+
+    if len(word)>0:
+        if 'lambda' in graph[int(state)].keys():
+            for t in graph[int(state)]['lambda']:
                 if t != str(stopState):
-                    state = t
-                    path.append((t,word[i]))
-                    if len(word)==1 and int(state) in fin and cuvDict[initialWord] == 0:
+                    path.append((t,'lambda'))
+                    if len(word)==1 and int(t) in fin and cuvDict[initialWord] == 0:
                         cuvDict[initialWord] = 1
                         gPath = path
                         return True
-                    checkWord(initialWord,word[pos+1:],state,pos,path.copy())
+                    checkWord(initialWord,word[pos:],t,pos,path.copy())
+                    path.pop()
+        if word[i] in graph[int(state)].keys():
+            for t in graph[int(state)][word[i]]:
+                if t != str(stopState):
+                    path.append((t,word[i]))
+                    if len(word)==1 and int(t) in fin and cuvDict[initialWord] == 0:
+                        cuvDict[initialWord] = 1
+                        gPath = path
+                        return True
+                    checkWord(initialWord,word[pos+1:],t,pos,path.copy())
                     path.pop()
             pos += 1
+
     return False
 
 def print_data(file):
@@ -67,7 +79,7 @@ def print_data(file):
     g.close()
 
 
-read_data('date.in')
+read_data('date-lambda.in')
 print(graph)
 print_data('date.out')
 
